@@ -25,7 +25,7 @@ $(document).ready(function () {
 });
 
 if ('serviceWorker' in navigator) {
-    navigator.serviceWorker.register('/service-worker.js')
+    navigator.serviceWorker.register('simple-picker/service-worker.js')
     .then(function(registration) {
       console.log('Registration successful, scope is:', registration.scope);
     })
