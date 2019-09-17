@@ -1,0 +1,21 @@
+{
+    "short_name": "Picker",
+    "name": "Simple Picker",
+    "icons": [
+      {
+        "src": "/images/paintbrush.png",
+        "type": "image/png",
+        "sizes": "160x160"
+      },
+      {
+        "src": "/images/icon-512.png",
+        "type": "image/png",
+        "sizes": "512x512"
+      }
+    ],
+    "start_url": "/",
+    "background_color": "#F2F2F2",
+    "theme_color": "#2E2E2E",
+    "display": "standalone",
+    "orientation": "portrait"
+  }

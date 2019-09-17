@@ -1,0 +1,31 @@
+{
+  "name": "simple-picker",
+  "version": "1.0.0",
+  "description": "A random color picker",
+  "main": "index.js",
+  "dependencies": {
+    "bootstrap": "^4.3.1",
+    "jquery": "^3.4.1",
+    "popper": "^1.0.1",
+    "popper.js": "^1.15.0",
+    "rgb-hex": "^3.0.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "mocha"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/slimekat/simple-picker.git"
+  },
+  "keywords": [
+    "tools",
+    "color"
+  ],
+  "author": "Sadie Lee",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/slimekat/simple-picker/issues"
+  },
+  "homepage": "https://github.com/slimekat/simple-picker#readme"
+}
