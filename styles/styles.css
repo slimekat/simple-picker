@@ -23,7 +23,8 @@ body {
     border-top-left-radius: 50px;
     border-top-right-radius: 50px;
     height: 80vh;
-    margin: auto 10% auto 10%;
+    margin: 0 auto 0 auto;
+    max-width: 80vw;
     /* justify-content: center; */
     align-items: center;
 
