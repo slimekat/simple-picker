@@ -1,4 +1,4 @@
-import rgbHex from 'rgb-hex';
+// import rgbHex from 'rgb-hex';
 
 $(document).ready(function () {
     $("#copy-btn").click(function () {
