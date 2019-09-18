@@ -1,3 +1,5 @@
+import rgbHex from 'rgb-hex';
+
 $(document).ready(function () {
     $("#copy-btn").click(function () {
         document.getElementById('color-toast').innerText = document.getElementById('rgb').innerHTML;
