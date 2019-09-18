@@ -39,7 +39,7 @@
             "density": "4.0"
         }
     ],
-    "start_url": "/",
+    "start_url": "/simple-picker",
     "background_color": "#F2F2F2",
     "theme_color": "#2E2E2E",
     "display": "standalone",
