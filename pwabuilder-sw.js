@@ -1,57 +1,58 @@
-// This is the "Offline page" service worker
+var APP_PREFIX = 'Simple-Picker'     // Identifier for this app (this needs to be consistent across every cache update)
+var VERSION = 'version_01'              // Version of the off-line cache (change this value everytime you want to update cache)
+var CACHE_NAME = APP_PREFIX + VERSION
+var URLS = [                            // Add URL you want to cache in this list.
+  '/simple-picker/',                     // If you have separate JS/CSS files,
+  '/simple-picker/index.html'            // add path to those files here
+]
 
-const CACHE = "pwabuilder-page";
-
-// TODO: replace the following with the correct offline fallback page i.e.: const offlineFallbackPage = "offline.html";
-const offlineFallbackPage = "ToDo-replace-this-name.html";
-
-// Install stage sets up the offline page in the cache and opens a new cache
-self.addEventListener("install", function (event) {
-  console.log("[PWA Builder] Install Event processing");
-
-  event.waitUntil(
-    caches.open(CACHE).then(function (cache) {
-      console.log("[PWA Builder] Cached offline page during install");
-
-      if (offlineFallbackPage === "ToDo-replace-this-name.html") {
-        return cache.add(new Response("TODO: Update the value of the offlineFallbackPage constant in the serviceworker."));
+// Respond with cached resources
+self.addEventListener('fetch', function (e) {
+  console.log('fetch request : ' + e.request.url)
+  e.respondWith(
+    caches.match(e.request).then(function (request) {
+      if (request) { // if cache is available, respond with cache
+        console.log('responding with cache : ' + e.request.url)
+        return request
+      } else {       // if there are no cache, try fetching request
+        console.log('file is not cached, fetching : ' + e.request.url)
+        return fetch(e.request)
       }
 
-      return cache.add(offlineFallbackPage);
+      // You can omit if/else for console.log & put one line below like this too.
+      // return request || fetch(e.request)
     })
-  );
-});
+  )
+})
 
-// If any fetch fails, it will show the offline page.
-self.addEventListener("fetch", function (event) {
-  if (event.request.method !== "GET") return;
-
-  event.respondWith(
-    fetch(event.request).catch(function (error) {
-      // The following validates that the request was for a navigation to a new document
-      if (
-        event.request.destination !== "document" ||
-        event.request.mode !== "navigate"
-      ) {
-        return;
-      }
-
-      console.error("[PWA Builder] Network request Failed. Serving offline page " + error);
-      return caches.open(CACHE).then(function (cache) {
-        return cache.match(offlineFallbackPage);
-      });
+// Cache resources
+self.addEventListener('install', function (e) {
+  e.waitUntil(
+    caches.open(CACHE_NAME).then(function (cache) {
+      console.log('installing cache : ' + CACHE_NAME)
+      return cache.addAll(URLS)
     })
-  );
-});
+  )
+})
 
-// This is an event that can be fired from your page to tell the SW to update the offline page
-self.addEventListener("refreshOffline", function () {
-  const offlinePageRequest = new Request(offlineFallbackPage);
+// Delete outdated caches
+self.addEventListener('activate', function (e) {
+  e.waitUntil(
+    caches.keys().then(function (keyList) {
+      // `keyList` contains all cache names under your username.github.io
+      // filter out ones that has this app prefix to create white list
+      var cacheWhitelist = keyList.filter(function (key) {
+        return key.indexOf(APP_PREFIX)
+      })
+      // add current cache name to white list
+      cacheWhitelist.push(CACHE_NAME)
 
-  return fetch(offlineFallbackPage).then(function (response) {
-    return caches.open(CACHE).then(function (cache) {
-      console.log("[PWA Builder] Offline page updated from refreshOffline event: " + response.url);
-      return cache.put(offlinePageRequest, response);
-    });
-  });
-});
+      return Promise.all(keyList.map(function (key, i) {
+        if (cacheWhitelist.indexOf(key) === -1) {
+          console.log('deleting cache : ' + keyList[i] )
+          return caches.delete(keyList[i])
+        }
+      }))
+    })
+  )
+})
